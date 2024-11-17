@@ -2,7 +2,6 @@
   "name": "weatherapp",
   "version": "1.0.0",
   "description": "simple weather app in react and tailwind",
-  "main": "App.js",
   "scripts": {
     "test": "jest"
   },
