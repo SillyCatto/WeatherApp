@@ -1,6 +1,6 @@
+import "../index.css";
 import React, { useState } from "react";
 import ReactDOM from "react-dom/client";
-import { useState } from 'react';
 
 
 const App = () => {
@@ -35,29 +35,34 @@ function Square() {
   function handleClick() {
     console.log('clicked!');
   }
-  return <button className="square"
-    onClick={handleClick} >
-    {value}
-  </button>;
+  return (
+    <button
+      className="square bg-gray-200 border border-gray-400 w-16 h-16 flex items-center justify-center text-xl font-bold"
+      onClick={handleClick}
+    >
+      {value}
+    </button>);
 }
 
 export default function Board() {
   return (
     <>
-      <div className="board-row">
-        <Square />
-        <Square />
-        <Square />
-      </div>
-      <div className="board-row">
-        <Square />
-        <Square />
-        <Square />
-      </div>
-      <div className="board-row">
-        <Square />
-        <Square />
-        <Square />
+      <div className="flex flex-col gap-2" >
+        <div className="board-row flex gap-2">
+          <Square />
+          <Square />
+          <Square />
+        </div>
+        <div className="board-row flex gap-2">
+          <Square />
+          <Square />
+          <Square />
+        </div>
+        <div className="board-row flex gap-2">
+          <Square />
+          <Square />
+          <Square />
+        </div>
       </div>
     </>
   );
