@@ -1,20 +1,20 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import ReactDOM from "react-dom/client";
 import { useState } from 'react';
 
 
 const App = () => {
-    return (
+  return (
+    <div>
       <div>
-      <div>
-      <h1>Hello World!</h1>
-      <p>Tic Tac Toe </p>
-      <MyButton />
-      <MyButton />
+        <h1>Hello World!</h1>
+        <p>Tic Tac Toe </p>
+        <MyButton />
+        <MyButton />
       </div>
       <Board />
-      </div>
-    );
+    </div>
+  );
 };
 function MyButton() {
   const [count, setCount] = useState(0);
@@ -36,9 +36,9 @@ function Square() {
     console.log('clicked!');
   }
   return <button className="square"
-   onClick = {handleClick} > 
+    onClick={handleClick} >
     {value}
-   </button>;
+  </button>;
 }
 
 export default function Board() {
@@ -64,4 +64,4 @@ export default function Board() {
 }
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(<App/>);
+root.render(<App />);
