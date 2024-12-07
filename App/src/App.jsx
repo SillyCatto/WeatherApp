@@ -10,13 +10,13 @@ const App = () => {
         <p className="font-bold text-4xl" >Tic Tac Toe </p>
         <p className="p-2 font-medium" >Turn: Player-1</p>
       </div>
-      <Board />
+      <Game />
     </div>
   );
 };
 
-// function MyButton() {
-//   const [count, setCount] = useState(0);
+function MyButton() {
+  const [count, setCount] = useState(0);
 
 //   function handleClick() {
 //     setCount(count + 1);
@@ -34,40 +34,74 @@ function Square() {
   function handleClick() {
     console.log('clicked!');
   }
-  return (
-    <button
-      className="square bg-gray-200 border border-gray-400 w-16 h-16 flex items-center justify-center text-xl font-bold"
-      onClick={handleClick}
-    >
-      {value}
-    </button>);
+  return <button className="square"
+   onClick = {handleClick} >
+    {value}
+   </button>;
 }
 
-export default function Board() {
+function Board({ xIsNext, squares, onPlay }) {
+  function handleClick(i) {
+    if (squares[i] || calculateWinner(squares)) {
+      return;
+    }
+    const nextSquares = squares.slice();
+    if (xIsNext) {
+      nextSquares[i] = 'X';
+    } else {
+      nextSquares[i] = 'O';
+    }
+    onPlay(nextSquares);
+  }
+
+  const winner = calculateWinner(squares);
+  let status;
+  if (winner) {
+    status = 'Winner: ' + winner;
+  } else {
+    status = 'Next player: ' + (xIsNext ? 'X' : 'O');
+  }
+
   return (
     <>
-      <div className="flex justify-center items-center p-6" >
-        <div className="flex flex-col gap-2" >
-          <div className="board-row flex gap-2">
-            <Square />
-            <Square />
-            <Square />
-          </div>
-          <div className="board-row flex gap-2">
-            <Square />
-            <Square />
-            <Square />
-          </div>
-          <div className="board-row flex gap-2">
-            <Square />
-            <Square />
-            <Square />
-          </div>
-        </div>
+      <div className="status">{status}</div>
+      <div className="board-row">
+        <Square value={squares[0]} onSquareClick={() => handleClick(0)} />
+        <Square value={squares[1]} onSquareClick={() => handleClick(1)} />
+        <Square value={squares[2]} onSquareClick={() => handleClick(2)} />
+      </div>
+      <div className="board-row">
+        <Square value={squares[3]} onSquareClick={() => handleClick(3)} />
+        <Square value={squares[4]} onSquareClick={() => handleClick(4)} />
+        <Square value={squares[5]} onSquareClick={() => handleClick(5)} />
+      </div>
+      <div className="board-row">
+        <Square value={squares[6]} onSquareClick={() => handleClick(6)} />
+        <Square value={squares[7]} onSquareClick={() => handleClick(7)} />
+        <Square value={squares[8]} onSquareClick={() => handleClick(8)} />
       </div>
     </>
   );
 }
 
+function calculateWinner(squares) {
+  const lines = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6]
+  ];
+  for (let i = 0; i < lines.length; i++) {
+    const [a, b, c] = lines[i];
+    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+      return squares[a];
+    }
+  }
+  return null;
+}
 const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(<App />);
+root.render(<App  />);
