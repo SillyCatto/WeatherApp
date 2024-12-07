@@ -2,21 +2,19 @@ import "../index.css";
 import React, { useState } from "react";
 import ReactDOM from "react-dom/client";
 
-
 const App = () => {
   return (
     <div>
       <div className="flex flex-col items-center justify-center p-4" >
         <p className="font-bold text-4xl" >Tic Tac Toe </p>
-        <p className="p-2 font-medium" >Turn: Player-1</p>
       </div>
       <Game />
     </div>
   );
 };
 
-function MyButton() {
-  const [count, setCount] = useState(0);
+// function MyButton() {
+//   const [count, setCount] = useState(0);
 
 //   function handleClick() {
 //     setCount(count + 1);
@@ -29,15 +27,61 @@ function MyButton() {
 //   );
 // }
 
-function Square() {
-  const [value, setValue] = useState(null);
-  function handleClick() {
-    console.log('clicked!');
+function Square({ value, onSquareClick }) {
+  return (
+    <button
+      className="square bg-gray-200 border border-gray-400 w-16 h-16 flex items-center justify-center text-xl font-bold"
+      onClick={onSquareClick}
+    >
+      {value}
+    </button>
+  );
+}
+
+export default function Game() {
+
+  const [history, setHistory] = useState([Array(9).fill(null)]);
+  const [currentMove, setCurrentMove] = useState(0);
+  const xIsNext = currentMove % 2 === 0;
+  const currentSquares = history[currentMove];
+
+
+  function handlePlay(nextSquares) {
+    const nextHistory = [...history.slice(0, currentMove + 1), nextSquares];
+    setHistory(nextHistory);
+    setCurrentMove(nextHistory.length - 1);
+
   }
-  return <button className="square"
-   onClick = {handleClick} >
-    {value}
-   </button>;
+  function jumpTo(nextMove) {
+    setCurrentMove(nextMove);
+
+  }
+  const moves = history.map((squares, move) => {
+    let description;
+    if (move > 0) {
+      description = 'Go to move #' + move;
+    } else {
+      description = 'Go to game start';
+    }
+    return (
+      <li key={move}>
+        <button onClick={() => jumpTo(move)}>{description}</button>
+      </li>
+    );
+  });
+
+
+
+  return (
+    <div className="game">
+      <div className="game-board">
+        <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
+      </div>
+      <div className="game-info">
+        <ol>{moves}</ol>
+      </div>
+    </div>
+  );
 }
 
 function Board({ xIsNext, squares, onPlay }) {
@@ -64,21 +108,25 @@ function Board({ xIsNext, squares, onPlay }) {
 
   return (
     <>
-      <div className="status">{status}</div>
-      <div className="board-row">
-        <Square value={squares[0]} onSquareClick={() => handleClick(0)} />
-        <Square value={squares[1]} onSquareClick={() => handleClick(1)} />
-        <Square value={squares[2]} onSquareClick={() => handleClick(2)} />
-      </div>
-      <div className="board-row">
-        <Square value={squares[3]} onSquareClick={() => handleClick(3)} />
-        <Square value={squares[4]} onSquareClick={() => handleClick(4)} />
-        <Square value={squares[5]} onSquareClick={() => handleClick(5)} />
-      </div>
-      <div className="board-row">
-        <Square value={squares[6]} onSquareClick={() => handleClick(6)} />
-        <Square value={squares[7]} onSquareClick={() => handleClick(7)} />
-        <Square value={squares[8]} onSquareClick={() => handleClick(8)} />
+      <div className="flex justify-center items-center p-6" >
+        <div className="flex flex-col gap-2">
+        <div className="status flex flex-col justify-center items-center">{status}</div>
+          <div className="board-row flex gap-2">
+            <Square value={squares[0]} onSquareClick={() => handleClick(0)} />
+            <Square value={squares[1]} onSquareClick={() => handleClick(1)} />
+            <Square value={squares[2]} onSquareClick={() => handleClick(2)} />
+          </div>
+          <div className="board-row flex gap-2">
+            <Square value={squares[3]} onSquareClick={() => handleClick(3)} />
+            <Square value={squares[4]} onSquareClick={() => handleClick(4)} />
+            <Square value={squares[5]} onSquareClick={() => handleClick(5)} />
+          </div>
+          <div className="board-row flex gap-2">
+            <Square value={squares[6]} onSquareClick={() => handleClick(6)} />
+            <Square value={squares[7]} onSquareClick={() => handleClick(7)} />
+            <Square value={squares[8]} onSquareClick={() => handleClick(8)} />
+          </div>
+        </div>
       </div>
     </>
   );
@@ -104,4 +152,4 @@ function calculateWinner(squares) {
   return null;
 }
 const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(<App  />);
+root.render(<App />);
